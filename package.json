@@ -1,0 +1,16 @@
+{
+  "name": "mintest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "min.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "async": "^0.9.0",
+    "del": "^0.1.3",
+    "minimize": "^0.10.0"
+  }
+}
