@@ -1,4 +1,9 @@
 html-minifier-tests
 =============
 
-run `npm install && node min.js` then check the `dist/` folder
+run
+```bash
+npm install
+node min.js
+```
+then check the `dist/` folder
