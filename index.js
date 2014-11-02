@@ -130,6 +130,8 @@ async.series([
     head: header
   });
 
+  var jsonOutput = _.cloneDeep(files);
+
   _.forEach(files, function (file) {
     row = [
       getFileName(file.source.path), 
@@ -145,9 +147,16 @@ async.series([
 
   console.log(consoleTable.toString());
 
-  fs.writeFile(__dirname + '/results/results.json', JSON.stringify(files, null, 4));
-
   csv.stringify(csvTable, function(err, data){
     fs.writeFile(__dirname + '/results/results.csv', data);
   });
+
+  jsonOutput = _.map(jsonOutput, function (f) {
+    _.forOwn(f, function(o, k) {
+      f[k].path = getFileName(f[k].path);
+    });
+    return f;
+  });
+
+  fs.writeFile(__dirname + '/results/results.json', JSON.stringify(jsonOutput, null, 4));
 });
