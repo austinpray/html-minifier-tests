@@ -253,6 +253,24 @@
     },
     {
         "source": {
+            "path": "shoptalkshow.com.html",
+            "size": 17659
+        },
+        "gzip": {
+            "path": "shoptalkshow.com.html.gz",
+            "size": 5105
+        },
+        "min": {
+            "path": "shoptalkshow.com.min.html",
+            "size": 15190
+        },
+        "gzipAndMin": {
+            "path": "shoptalkshow.com.min.html.gz",
+            "size": 4433
+        }
+    },
+    {
+        "source": {
             "path": "slashdot.org.html",
             "size": 123037
         },
