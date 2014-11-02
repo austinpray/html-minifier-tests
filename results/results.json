@@ -38,19 +38,19 @@
     {
         "source": {
             "path": "cnet.tumblr.com.html",
-            "size": 58321
+            "size": 56723
         },
         "gzip": {
             "path": "cnet.tumblr.com.html.gz",
-            "size": 10882
+            "size": 10819
         },
         "min": {
             "path": "cnet.tumblr.com.min.html",
-            "size": 47508
+            "size": 47303
         },
         "gzipAndMin": {
             "path": "cnet.tumblr.com.min.html.gz",
-            "size": 9952
+            "size": 9944
         }
     },
     {
@@ -254,11 +254,11 @@
     {
         "source": {
             "path": "slashdot.org.html",
-            "size": 123057
+            "size": 123037
         },
         "gzip": {
             "path": "slashdot.org.html.gz",
-            "size": 30263
+            "size": 30244
         },
         "min": {
             "path": "slashdot.org.min.html",
@@ -272,37 +272,37 @@
     {
         "source": {
             "path": "stackoverflow.com.2.html",
-            "size": 229647
+            "size": 225987
         },
         "gzip": {
             "path": "stackoverflow.com.2.html.gz",
-            "size": 40409
+            "size": 40321
         },
         "min": {
             "path": "stackoverflow.com.2.min.html",
-            "size": 169178
+            "size": 169033
         },
         "gzipAndMin": {
             "path": "stackoverflow.com.2.min.html.gz",
-            "size": 37455
+            "size": 37434
         }
     },
     {
         "source": {
             "path": "stackoverflow.com.html",
-            "size": 250625
+            "size": 246608
         },
         "gzip": {
             "path": "stackoverflow.com.html.gz",
-            "size": 35258
+            "size": 35172
         },
         "min": {
             "path": "stackoverflow.com.min.html",
-            "size": 203048
+            "size": 202981
         },
         "gzipAndMin": {
             "path": "stackoverflow.com.min.html.gz",
-            "size": 33660
+            "size": 33649
         }
     },
     {
