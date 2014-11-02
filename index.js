@@ -130,8 +130,6 @@ async.series([
     head: header
   });
 
-  var jsonOutput = _.cloneDeep(files);
-
   _.forEach(files, function (file) {
     row = [
       getFileName(file.source.path), 
@@ -150,6 +148,8 @@ async.series([
   csv.stringify(csvTable, function(err, data){
     fs.writeFile(__dirname + '/results/results.csv', data);
   });
+
+  var jsonOutput = _.cloneDeep(files);
 
   jsonOutput = _.map(jsonOutput, function (f) {
     _.forOwn(f, function(o, k) {
