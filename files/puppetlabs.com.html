@@ -1,0 +1,905 @@
+<!doctype html>
+<!--[if lt IE 7]>    <html class="no-js is-ie lt-ie9 lt-ie8 lt-ie7" lang="en" xml:lang="en" dir="ltr" 
+  xmlns:og="http://ogp.me/ns#"> <![endif]-->
+<!--[if IE 7]>       <html class="no-js is-ie lt-ie9 lt-ie8 ie7" lang="en" xml:lang="en" dir="ltr" 
+  xmlns:og="http://ogp.me/ns#"> <![endif]-->
+<!--[if IE 8]>       <html class="no-js is-ie lt-ie9 ie8" lang="en" xml:lang="en" dir="ltr" 
+  xmlns:og="http://ogp.me/ns#"> <![endif]-->
+<!--[if IE 9]>       <html class="no-js is-ie ie9" lang="en" xml:lang="en" dir="ltr" 
+  xmlns:og="http://ogp.me/ns#"> <![endif]-->
+<!--[if gt IE 9]>    <html class="no-js is-ie" lang="en" xml:lang="en" dir="ltr" 
+  xmlns:og="http://ogp.me/ns#"> <![endif]-->
+<!--[if !(IE)]><!--> <html class="no-js" lang="en" xml:lang="en" dir="ltr" 
+  xmlns:og="http://ogp.me/ns#"> <!--<![endif]-->
+  <head>
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
+<meta charset="utf-8" />
+<meta property="og:url" content="http://puppetlabs.com/blog/using-puppet-modules-to-install-and-manage-wordpress" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="website" />
+<meta content="width=device-width, initial-scale=1" name="viewport" />
+<link rel="image_src" href="http://puppetlabs.com/sites/all/themes/puppetlabs/images/pl_vertical_970x.png" />
+<meta name="keywords" content="puppet, puppet labs, puppet modules, wordpress, puppet forge" />
+<meta name="description" content="Puppet modules are a fantastic way to deploy and manage specific applications. The Puppet Forge contains a wealth of third-party modules that allow you to do some awesome stuff with a minimum of work. In this post, we use a module from the Forge to solve a common task—using Puppet to set up a WordPress blog. Finding the best way to accomplish this with Puppet was a challenge, and helped us feel the joys and pains of those who use our software on a daily basis." />
+<meta property="og:title" content="Using Puppet Modules to Install and Manage WordPress" />
+<meta property="og:description" content="Puppet modules are a fantastic way to deploy and manage specific applications. The Puppet Forge contains a wealth of third-party modules that allow you to do some awesome stuff with a minimum of work. In this post, we use a module from the Forge to solve a common task—using Puppet to set up a WordPress blog. Finding the best way to accomplish this with Puppet was a challenge, and helped us feel the joys and pains of those who use our software on a daily basis." />
+<meta property="og:site_name" content="Puppet Labs" />
+    <title>Using Puppet Modules to Install and Manage WordPress | Puppet Labs</title>
+    <link type="text/css" rel="stylesheet" href="http://puppetlabs.com/sites/default/files/advagg_css/css__MB2vXdOUI_NQDD4mUq1_GbUbTCZFlzZslgAgarV3-CQ__9xJy_Q6spWQoblh_skXXiMKj6vnzpyzrob7EtHEzjjw__8GdOQtaRUIG4qZM0GkhKDwdI6w4jMyBCLt1_xDa_GrY.css" media="all" />
+<style type="text/css" media="all">
+<!--/*--><![CDATA[/*><!--*/
+.url-textfield{display:none !important;}
+
+/*]]>*/-->
+</style>
+<link type="text/css" rel="stylesheet" href="http://puppetlabs.com/sites/default/files/advagg_css/css__JDI0K6cCcl1KxBUgwOYfITtH9gyDkVOpIsxlGeFawTc__V301ZetV-ZyBasyIJxCwbEPCjJEBQY_RU1EdIwJuMG0__8GdOQtaRUIG4qZM0GkhKDwdI6w4jMyBCLt1_xDa_GrY.css" media="all" />
+<link type="text/css" rel="stylesheet" href="http://puppetlabs.com/sites/default/files/advagg_css/css__QkPNrhKCIsqDfcYKMx0Wqz09el1XPiU8z9dW7JrfReE__38FJJexZnnwQ-ESayuwVf_Vh2leAE1x3O7WGbL3XV9M__8GdOQtaRUIG4qZM0GkhKDwdI6w4jMyBCLt1_xDa_GrY.css" media="all" />
+<link type="text/css" rel="stylesheet" href="http://puppetlabs.com/sites/default/files/advagg_css/css__VJUTfsbc-XKGAYroobgAiwn6i9zHR7W4SW2a-2VqTjg__K1TJdHRb5GbI-rL_gFjbIVkkPOESNTTfPgwYK6OyAEg__8GdOQtaRUIG4qZM0GkhKDwdI6w4jMyBCLt1_xDa_GrY.css" media="all" />
+    <script type="text/javascript" src="http://puppetlabs.com/profiles/panopoly/libraries/respondjs/respond.min.js?nebpl8"></script>
+<script type="text/javascript" src="http://puppetlabs.com/sites/default/files/advagg_js/js__IJ2sJN7q2f1pu7Wibc5rXTDcuYo_ZXGivuQjvoglU2U__rfexM5r1MBYc2XY1IaMglLdv9GcCVEoSgzekuSY39ho__8GdOQtaRUIG4qZM0GkhKDwdI6w4jMyBCLt1_xDa_GrY.js"></script>
+<script type="text/javascript" src="//cdn.optimizely.com/js/212539509.js"></script>
+<script type="text/javascript" src="http://puppetlabs.com/sites/default/files/advagg_js/js__Eud7B1knlPGqpmAWMSUyIyz1KToZsxYcnqFtn2D0IGI__PkmtXRcxHLGJn8k5GkB28zNMtKLx6ax0U2XREwsI4hs__8GdOQtaRUIG4qZM0GkhKDwdI6w4jMyBCLt1_xDa_GrY.js"></script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+var switchTo5x = true;var __st_loadLate = true;
+//--><!]]>
+</script>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+if (stLight !== undefined) { stLight.options({"publisher":"dr-8005bfa1-ec2e-ba4d-dfb4-4974177c41cd","version":"5x","doNotCopy":true,"hashAddressBar":false,"doNotHash":true}); }
+//--><!]]>
+</script>
+<script type="text/javascript" src="http://puppetlabs.com/sites/default/files/advagg_js/js__X-hkZHTQ_pAfiu8vXBTm_TC9GNQALIQDt1OM2sksnpw__23NAk4_xqYiFufNXwnuw06UaGbJ8Es1DcFnSBTyKN1w__8GdOQtaRUIG4qZM0GkhKDwdI6w4jMyBCLt1_xDa_GrY.js"></script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+jQuery.extend(Drupal.settings, {"basePath":"\/","pathPrefix":"","ajaxPageState":{"theme":"puppetlabs","theme_token":"HijQJqzDusVV3NjH6VHY6AvBIixhwqxV6x8iSBuUL8w","css":{"modules\/system\/system.base.css":1,"modules\/system\/system.menus.css":1,"modules\/system\/system.messages.css":1,"modules\/system\/system.theme.css":1,"misc\/ui\/jquery.ui.core.css":1,"misc\/ui\/jquery.ui.theme.css":1,"misc\/ui\/jquery.ui.tabs.css":1,"misc\/ui\/jquery.ui.accordion.css":1,"sites\/all\/libraries\/prism\/prism.css":1,"modules\/comment\/comment.css":1,"profiles\/panopoly\/modules\/contrib\/date\/date_api\/date.css":1,"profiles\/panopoly\/modules\/contrib\/date\/date_popup\/themes\/datepicker.1.7.css":1,"sites\/all\/modules\/contrib\/environment_indicator\/environment_indicator.css":1,"modules\/field\/theme\/field.css":1,"sites\/all\/modules\/custom\/instance_manager\/instance_manager.css":1,"sites\/all\/modules\/contrib\/mollom\/mollom.css":1,"modules\/node\/node.css":1,"profiles\/panopoly\/modules\/panopoly\/panopoly_admin\/panopoly-admin.css":1,"profiles\/panopoly\/modules\/panopoly\/panopoly_admin\/panopoly-admin-navbar.css":1,"profiles\/panopoly\/modules\/panopoly\/panopoly_core\/css\/panopoly-dropbutton.css":1,"profiles\/panopoly\/modules\/panopoly\/panopoly_magic\/css\/panopoly-magic.css":1,"profiles\/panopoly\/modules\/panopoly\/panopoly_magic\/css\/panopoly-modal.css":1,"profiles\/panopoly\/modules\/panopoly\/panopoly_theme\/css\/panopoly-featured.css":1,"profiles\/panopoly\/modules\/panopoly\/panopoly_theme\/css\/panopoly-accordian.css":1,"profiles\/panopoly\/modules\/panopoly\/panopoly_widgets\/panopoly-widgets.css":1,"profiles\/panopoly\/modules\/panopoly\/panopoly_wysiwyg\/panopoly-wysiwyg.css":1,"sites\/all\/modules\/custom\/puppet_community_updates\/puppet_community_updates.css":1,"sites\/all\/modules\/contrib\/quiz\/quiz.css":1,"modules\/search\/search.css":1,"modules\/user\/user.css":1,"profiles\/panopoly\/modules\/contrib\/views\/css\/views.css":1,"profiles\/panopoly\/modules\/contrib\/caption_filter\/caption-filter.css":1,"profiles\/panopoly\/modules\/contrib\/ctools\/css\/ctools.css":1,"sites\/all\/modules\/contrib\/geshifilter\/geshifilter.css":1,"profiles\/panopoly\/modules\/contrib\/panels\/css\/panels.css":1,"sites\/all\/modules\/contrib\/rate\/rate.css":1,"sites\/all\/modules\/contrib\/taxonomy_access\/taxonomy_access.css":1,"sites\/all\/themes\/puppetlabs\/layouts\/burr_flipped\/..\/..\/css\/compiled\/layouts\/burr-flipped.css":1,"profiles\/panopoly\/modules\/contrib\/field_group\/field_group.css":1,"modules\/filter\/filter.css":1,"0":1,"profiles\/panopoly\/modules\/contrib\/field_group\/field_group.field_ui.css":1,"sites\/all\/modules\/custom\/puppet_admin_tools\/css\/puppet_admin_tools.css":1,"sites\/all\/themes\/puppetlabs\/css\/compiled\/style-blessed1.css":1,"sites\/all\/themes\/puppetlabs\/css\/compiled\/style.css":1,"profiles\/panopoly\/modules\/panopoly\/panopoly_images\/panopoly-images.css":1},"js":{"profiles\/panopoly\/modules\/panopoly\/panopoly_widgets\/panopoly-widgets.js":1,"\/\/munchkin.marketo.net\/munchkin.js":1,"profiles\/panopoly\/libraries\/respondjs\/respond.min.js":1,"profiles\/panopoly\/modules\/contrib\/jquery_update\/replace\/jquery\/1.7\/jquery.min.js":1,"misc\/jquery.once.js":1,"misc\/drupal.js":1,"profiles\/panopoly\/modules\/contrib\/jquery_update\/replace\/ui\/ui\/minified\/jquery.ui.core.min.js":1,"profiles\/panopoly\/modules\/contrib\/jquery_update\/replace\/ui\/ui\/minified\/jquery.ui.widget.min.js":1,"profiles\/panopoly\/modules\/contrib\/jquery_update\/replace\/ui\/ui\/minified\/jquery.ui.tabs.min.js":1,"profiles\/panopoly\/modules\/contrib\/jquery_update\/replace\/ui\/ui\/minified\/jquery.ui.accordion.min.js":1,"sites\/all\/libraries\/prism\/prism.js":1,"sites\/all\/modules\/contrib\/prism\/js\/prism.settings.js":1,"profiles\/panopoly\/modules\/contrib\/jquery_update\/replace\/ui\/external\/jquery.cookie.js":1,"sites\/all\/modules\/contrib\/environment_indicator\/tinycon.min.js":1,"sites\/all\/modules\/contrib\/environment_indicator\/environment_indicator.js":1,"sites\/all\/modules\/contrib\/environment_indicator\/color.js":1,"sites\/all\/modules\/custom\/instance_manager\/instance_manager.js":1,"profiles\/panopoly\/modules\/panopoly\/panopoly_admin\/panopoly-admin.js":1,"profiles\/panopoly\/modules\/panopoly\/panopoly_magic\/panopoly-magic.js":1,"profiles\/panopoly\/modules\/panopoly\/panopoly_theme\/js\/panopoly-accordion.js":1,"sites\/all\/modules\/custom\/puppet_community_updates\/puppet_community_updates.js":1,"profiles\/panopoly\/modules\/contrib\/caption_filter\/js\/caption-filter.js":1,"sites\/all\/modules\/contrib\/floating_block\/floating_block.js":1,"\/\/cdn.optimizely.com\/js\/212539509.js":1,"sites\/all\/modules\/custom\/puppet_analytics\/js\/pa.js":1,"http:\/\/w.sharethis.com\/button\/buttons.js":1,"profiles\/panopoly\/modules\/contrib\/field_group\/field_group.js":1,"sites\/all\/libraries\/placeholder\/jquery.placeholder.min.js":1,"sites\/all\/modules\/contrib\/placeholder\/placeholder.js":1,"modules\/filter\/filter.js":1,"misc\/textarea.js":1,"sites\/all\/modules\/contrib\/mollom\/mollom.js":1,"sites\/all\/modules\/custom\/puppet_admin_tools\/js\/puppet_admin_tools.js":1,"sites\/all\/themes\/puppetlabs\/js\/libs\/modernizr-2.8.2.min.js":1,"sites\/all\/themes\/puppetlabs\/js\/libs\/jquery.timeago.min.js":1,"sites\/all\/themes\/puppetlabs\/js\/libs\/jquery.flexslider-min.js":1,"sites\/all\/themes\/puppetlabs\/js\/libs\/jquery.placeholder.js":1,"sites\/all\/themes\/puppetlabs\/js\/script.js":1,"sites\/all\/themes\/puppetlabs\/js\/plugins.js":1,"sites\/all\/themes\/puppetlabs\/..\/..\/libraries\/fittext.js\/jquery.fittext.js":1,"sites\/all\/themes\/puppetlabs\/js\/jQueryString.js":1,"sites\/all\/themes\/puppetlabs\/js\/jquery.cookie.js":1,"sites\/all\/themes\/puppetlabs\/js\/leadcapture.js":1}},"floating_block":{"div.pane-block.lms-course-instructions":[]},"CToolsModal":{"modalSize":{"type":"scale","width":".9","height":".9","addWidth":0,"addHeight":0,"contentRight":25,"contentBottom":75},"modalOptions":{"opacity":".55","background-color":"#FFF"},"animationSpeed":"fast","modalTheme":"CToolsModalDialog","throbberTheme":"CToolsModalThrobber"},"tagmap":[],"wysiwyg":{"triggers":{"edit-comment-body-und-0-format--2":{"field":"edit-comment-body-und-0-value","formatplain_text":{"editor":"none","status":1,"toggle":1,"resizable":1},"formatfiltered_html":{"editor":"none","status":1,"toggle":1,"resizable":1}}}}});
+//--><!]]>
+</script>
+  </head>
+  <body class="html not-front not-logged-in no-sidebars page-node page-node- page-node-566 node-type-blog-post region-content" >
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-PF6FV6"
+ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script type="text/javascript">
+(function(w,d,s,l,i){
+
+  w[l]=w[l]||[];
+  w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+  var f=d.getElementsByTagName(s)[0];
+  var j=d.createElement(s);
+  var dl=l!='dataLayer'?'&l='+l:'';
+  j.src='//www.googletagmanager.com/gtm.js?id='+i+dl;
+  j.type='text/javascript';
+  j.async=true;
+  f.parentNode.insertBefore(j,f);
+
+})(window,document,'script','dataLayer','GTM-PF6FV6');
+</script>
+<!-- End Google Tag Manager -->
+    <div id="skip">
+      <em><a href="#content">Skip to Content</a> &darr;</em>
+    </div>
+        <div id="page" class="page">
+
+  <header id="site-header" role="banner">
+    <div class="header-wrapper">
+      
+      <div class="morebar">
+  <a class="button-more-menu" aria-haspopup="true">
+    <button type="button">
+      <span class="icon fa fa-cogs"></span>
+      <span class="title">More</span>
+    </button>
+  </a>
+  <ul>
+    <li class="icons-home top">
+      <a href="/" onclick="_gaq.push(['_trackEvent', 'Toolbar', 'click', 'Home']);">
+        <img src="/sites/all/themes/puppetlabs/images/svg/icon-home.svg" />
+        home</a>
+    </li>
+    <li class="icons-tools top">
+      <a href="http://forge.puppetlabs.com" onclick="_gaq.push(['_trackEvent', 'Toolbar', 'click', 'Forge']);">
+        <img src="/sites/all/themes/puppetlabs/images/svg/icon-tools.svg" />
+        Forge</a>
+    </li>
+    <li class="icons-book top">
+      <a href="http://docs.puppetlabs.com" onclick="_gaq.push(['_trackEvent', 'Toolbar', 'click', 'Docs']);">
+        <img src="/sites/all/themes/puppetlabs/images/svg/icon-book.svg" />
+        <abbr title="Documents">Docs</abbr></a>
+    </li>
+    <li class="icons-graduation top">
+      <a href="/learn" onclick="_gaq.push(['_trackEvent', 'Toolbar', 'click', 'Training']);">
+        <img src="/sites/all/themes/puppetlabs/images/svg/icon-graduation-cap.svg" />
+        Learn</a>
+    </li>
+    <li class="icons-users bottom">
+      <a href="/community/overview" onclick="_gaq.push(['_trackEvent', 'Toolbar', 'click', 'Community']);">
+        <img src="/sites/all/themes/puppetlabs/images/svg/icon-users.svg" />
+        Community</a>
+    </li>
+    <li class="icons-ticket bottom">
+      <a href="http://tickets.puppetlabs.com" onclick="_gaq.push(['_trackEvent', 'Toolbar', 'click', 'JIRA']);">
+        <img src="/sites/all/themes/puppetlabs/images/svg/icon-ticket.svg" />
+        Tickets</a>
+    </li>
+    <li class="icons-help-circled bottom">
+      <a href="/help" onclick="_gaq.push(['_trackEvent', 'Toolbar', 'click', 'Help']);">
+        <img src="/sites/all/themes/puppetlabs/images/svg/icon-help-circled.svg" />
+        Help</a>
+    </li>
+  </ul>
+</div>
+
+      <div class="navbar">
+        <div class="navbar-section logo">
+          <a href="/" rel="home" id="site-logo" onclick="_gaq.push(['_trackEvent', 'Navbar', 'click', 'Home']);">
+            <span class="icon"></span>
+            <span class="title">PuppetLabs</span>
+          </a>
+        </div>
+        <div class="navbar-section mega-menu">
+          <a class="button-main" aria-haspopup="true">
+            <button type="button">
+              <span class="icon fa fa-bars"></span>
+              <span class="title">Menu</span>
+            </button>
+          </a>
+          <div class="mega-menu-container">
+            <div class="navbar-sub-section sub-menu">
+  <a class="button-sub-menu" aria-haspopup="true">
+    <button type="button">
+      <span class="icon fa fa-bars"></span>
+      <span class="title">Menu</span>
+    </button>
+  </a>
+  <div class="sub-menu-container">
+    <ul class="sub-menu-list">
+      <li class="menu-item active toggle first">
+        <a aria-haspopup="true">Products</a>
+        <div class="menu-item-container">
+          <div class="menu-col col-span-12">
+            <ul>
+              <li class="title">
+                <a href="/puppet/puppet-enterprise" onclick="_gaq.push(['_trackEvent', 'Menu Products', 'click', 'PE Head']);">
+                  <span class="main-title">Puppet Enterprise</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="menu-col col-span-6">
+            <ul>
+              <li class="title-img">
+                <a href="/puppet/puppet-enterprise" onclick="_gaq.push(['_trackEvent', 'Menu Products', 'click', 'PE Image']);">
+                  <span class="img"><img src="/sites/default/files/pe_nav_944x352.png" /></span>
+                </a>
+                <span class="copy mobile">
+                  Puppet Enterprise helps you automate repetitive tasks, make rapid changes and deploy critical applications, on prem or in the cloud.
+                </span>
+              </li>
+              <li class="clearfix pe-buttons">
+                <a href="/download-puppet-enterprise" onclick="_gaq.push(['_trackEvent', 'Menu Products', 'click', 'PE Try']);" class="align-left pe-button">
+                  <button type="button" class="orange">
+                    <span class=""></span>
+                    <span class="title">Try it</span>
+                  </button>
+                </a>
+                <a href="/puppet/how-to-buy" onclick="_gaq.push(['_trackEvent', 'Menu Products', 'click', 'PE Buy']);" class="align-left pe-button">
+                  <button type="button" class="green">
+                    <span class=""></span>
+                    <span class="title">Buy it</span>
+                  </button>
+                </a>
+                <a href="/puppet/puppet-enterprise" onclick="_gaq.push(['_trackEvent', 'Menu Products', 'click', 'PE Learn']);" class="align-left pe-button">
+                  <button type="button" class="dark-purple">
+                    <span class=""></span>
+                    <span class="title">Learn more</span>
+                  </button>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="menu-col col-span-6">
+            <ul>
+              <li class="clearfix">
+                <a href="/services/customer-support/premium" onclick="_gaq.push(['_trackEvent', 'Menu Products', 'click', 'Support']);">
+                  <span class="title">Premium Support</span>
+                </a>
+                <a href="/services/customer-support/premium" onclick="_gaq.push(['_trackEvent', 'Menu Products', 'click', 'Support Image']);">
+                  <span class="img icon"><img src="/sites/all/themes/puppetlabs/images/menu-prod-prem-support.png" /></span>
+                </a>
+                <span class="copy">Get 24/7 support and work in real time with a Puppet Labs support engineer.</span>
+              </li>
+              <li class="clearfix">
+                <a href="/services/consulting" onclick="_gaq.push(['_trackEvent', 'Menu Products', 'click', 'Services']);">
+                  <span class="title">Professional Services</span>
+                </a>
+                <a href="/services/consulting" onclick="_gaq.push(['_trackEvent', 'Menu Products', 'click', 'Services Image']);">
+                  <span class="img icon"><img src="/sites/all/themes/puppetlabs/images/menu-prod-proserve.png" /></span>
+                </a>
+               <span class="copy">Let our engineering consultants help you make the most of Puppet Enterprise.</span>
+              </li class="clearfix">
+              <li class="clearfix">
+                <a href="/services/training" onclick="_gaq.push(['_trackEvent', 'Menu Products', 'click', 'Training']);">
+                  <span class="title">Training Services</span>
+                </a>
+                <a href="/services/training" onclick="_gaq.push(['_trackEvent', 'Menu Products', 'click', 'Training Image']);">
+                  <span class="img icon"><img src="/sites/all/themes/puppetlabs/images/menu-prod-training.png" /></span>
+                </a>
+                <span class="copy">Attend an upcoming public or private training class, led by expert instructors.</span>
+              </li>
+              <li>
+                <a href="/puppet/open-source-projects" onclick="_gaq.push(['_trackEvent', 'Menu Products', 'click', 'Open Source']);" class="align-right">
+                  <span class="title">Open Source Projects</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </li>
+      <li class="menu-item">
+        <a aria-haspopup="true">Solutions</a>
+        <div class="menu-item-container">
+          <div class="menu-col col-span-4">
+            <ul>
+              <h3>Use Puppet for</h3>
+              <li><a href="/solutions/devops" onclick="_gaq.push(['_trackEvent', 'Menu Solutions', 'click', 'DevOps']);">DevOps</a></li>
+              <li><a href="/solutions/cloud-management" onclick="_gaq.push(['_trackEvent', 'Menu Solutions', 'click', 'Cloud Management']);">Cloud Management</a></li>
+              <li><a href="/solutions/configuration-management" onclick="_gaq.push(['_trackEvent', 'Menu Solutions', 'click', 'Config Management']);">Configuration Management</a></li>
+              <li><a href="/solutions/continuous-delivery" onclick="_gaq.push(['_trackEvent', 'Menu Solutions', 'click', 'Continuous Delivery']);">Continuous Delivery</a></li>
+              <li><a href="/solutions/it-compliance" onclick="_gaq.push(['_trackEvent', 'Menu Solutions', 'click', 'IT Compliance']);">IT Compliance</a></li>
+              <li><a href="/solutions/next-generation-provisioning" onclick="_gaq.push(['_trackEvent', 'Menu Solutions', 'click', 'Bare Metal']);">Bare Metal Provisioning</a></li>
+            </ul>
+            <ul>
+              <h3>Customer Stories</h3>
+              <li><a href="/customer/cedexis" onclick="_gaq.push(['_trackEvent', 'Menu Solutions', 'click', 'Cedexis']);">Cedexis</a></li>
+              <li><a href="/customer/constant-contact" onclick="_gaq.push(['_trackEvent', 'Menu Solutions', 'click', 'Constant Contact']);">Constant Contact</a></li>
+              <li><a href="/customer/github" onclick="_gaq.push(['_trackEvent', 'Menu Solutions', 'click', 'Github']);">GitHub</a></li>
+              <li><a href="/customer/gns-science" onclick="_gaq.push(['_trackEvent', 'Menu Solutions', 'click', 'GNS Science']);">GNS Science</a></li>
+              <li><a href="/customers/case-studies" onclick="_gaq.push(['_trackEvent', 'Menu Solutions', 'click', 'More']);">more&hellip;</a></li>
+            </ul>
+          </div>
+          <div class="menu-col col-span-4">
+            <ul>
+              <h3>Use Puppet With</h3>
+              <li><a href="/solutions/ec2" onclick="_gaq.push(['_trackEvent', 'Menu Solutions', 'click', 'Amazon']);">Amazon EC2</a></li>
+              <li><a href="/solutions/google-compute-engine" onclick="_gaq.push(['_trackEvent', 'Menu Solutions', 'click', 'Google']);">Google Compute Engine</a></li>
+              <li><a href="/solutions/juniper-networks" onclick="_gaq.push(['_trackEvent', 'Menu Solutions', 'click', 'Juniper']);">Juniper Networks</a></li>
+              <li><a href="/solutions/microsoft" onclick="_gaq.push(['_trackEvent', 'Menu Solutions', 'click', 'Microsoft']);">Microsoft</a></li>
+              <li><a href="/solutions/cloud-automation/compute/openstack" onclick="_gaq.push(['_trackEvent', 'Menu Solutions', 'click', 'Open Stack']);">OpenStack</a></li>
+              <li><a href="/solutions/cloud-automation/compute/vmware" onclick="_gaq.push(['_trackEvent', 'Menu Solutions', 'click', 'VMware']);">VMware</a></li>
+            </ul>
+          </div>
+          <div class="menu-col col-span-4 co-container">
+            <ul>
+              <h3>Industries</h3>
+              <li><a href="/industries/e-commerce" onclick="_gaq.push(['_trackEvent', 'Menu Solutions', 'click', 'E-commerce']);">E-commerce</a></li>
+              <li><a href="/industries/financial-services" onclick="_gaq.push(['_trackEvent', 'Menu Solutions', 'click', 'Financial Services']);">Financial Services</a></li>
+              <li><a href="/industries/government" onclick="_gaq.push(['_trackEvent', 'Menu Solutions', 'click', 'Government']);">Government</a></li>
+              <li><a href="/industries/service-providers" onclick="_gaq.push(['_trackEvent', 'Menu Solutions', 'click', 'Service Providers']);">Service Providers</a></li>
+              <li><a href="/industries/technology" onclick="_gaq.push(['_trackEvent', 'Menu Solutions', 'click', 'Technology']);">Technology</a></li>
+            </ul>
+            <ul class="co">
+              <li class="contained">
+                <a href="/contact-sales" onclick="_gaq.push(['_trackEvent', 'Menu Solutions', 'click', 'Highlight Sales']);" title="Contact Sales">
+                  <span class="icon-callout fa fa-phone"></span>
+                  <span class="title">Contact Sales</span>
+                  <span class="copy">We’d love to help you get started.</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </li>
+      <li class="menu-item"><a aria-haspopup="true">Resources</a>
+        <div class="menu-item-container">
+          <div class="menu-col col-span-4">
+            <ul>
+              <h3>Discover Puppet</h3>
+              <li><a href="/resources/webinars" onclick="_gaq.push(['_trackEvent', 'Menu Resources', 'click', 'Webinars']);">Webinars</a></li>
+              <li><a href="/resources/podcasts" onclick="_gaq.push(['_trackEvent', 'Menu Resources', 'click', 'Podcasts']);">Podcasts</a></li>
+              <li><a href="http://info.puppetlabs.com/download-whitepapers-a.html" onclick="_gaq.push(['_trackEvent', 'Menu Resources', 'click', 'Whitepapers']);" target="_blank">Whitepapers</a></li>
+              <li><a href="/blog" onclick="_gaq.push(['_trackEvent', 'Menu Resources', 'click', 'Blog']);">Blog</a></li>
+              <li><a href="/services/partners" onclick="_gaq.push(['_trackEvent', 'Menu Resources', 'click', 'Partners']);">Partners</a></li>
+              <li><a href="/2014-devops-report" onclick="_gaq.push(['_trackEvent', 'Menu Resources', 'click', 'DevOps Report']);">2014 DevOps Report</a></li>
+            </ul>
+          </div>
+          <div class="menu-col col-span-4">
+            <ul>
+              <h3>Learn Puppet</h3>
+              <li><a href="/learn" onclick="_gaq.push(['_trackEvent', 'Menu Resources', 'click', 'Learn']);">Puppet Learning</a></li>
+              <li><a href="/download-learning-vm" onclick="_gaq.push(['_trackEvent', 'Menu Resources', 'click', 'LVM']);">Learning VM</a></li>
+              <li><a href="/learn/library" onclick="_gaq.push(['_trackEvent', 'Menu Resources', 'click', 'LMS']);">Puppet Workshop</a></li>
+              <li><a href="/services/certification" onclick="_gaq.push(['_trackEvent', 'Menu Resources', 'click', 'Certification']);">Get Certified</a></li>
+              <li><a href="http://docs.puppetlabs.com" onclick="_gaq.push(['_trackEvent', 'Menu Resources', 'click', 'Docs']);" target="_blank">Documentation</a></li>
+              <li><a href="http://docs.puppetlabs.com/pe/latest/quick_start.html" onclick="_gaq.push(['_trackEvent', 'Menu Resources', 'click', 'Quick Start']);" target="_blank">Quick Start Guide</a></li>
+              <li><a href="http://docs.puppetlabs.com/references/latest/type.html" onclick="_gaq.push(['_trackEvent', 'Menu Resources', 'click', 'TRG']);" target="_blank">Type Reference Guide</a></li>
+              <li><a href="/resources/books" onclick="_gaq.push(['_trackEvent', 'Menu Resources', 'click', 'Recommended Reading']);">Recommended Reading</a></li>
+            </ul>
+          </div>
+          <div class="menu-col col-span-4 co-container">
+            <ul>
+              <h3>Engage with Puppet</h3>
+              <li><a href="http://forge.puppetlabs.com" onclick="_gaq.push(['_trackEvent', 'Menu Resources', 'click', 'Forge']);" target="_blank">Puppet Forge</a></li>
+              <li><a href="/events" onclick="_gaq.push(['_trackEvent', 'Menu Resources', 'click', 'Events']);">Events</a></li>
+              <li><a href="/community/PUG" onclick="_gaq.push(['_trackEvent', 'Menu Resources', 'click', 'PUG']);">Puppet User Groups (PUGs)</a></li>
+              <li><a href="https://groups.google.com/group/puppet-users?pli=1" onclick="_gaq.push(['_trackEvent', 'Menu Resources', 'click', 'User Group']);" target="_blank">Mailing List</a></li>
+              <li><a href="http://tickets.puppetlabs.com" onclick="_gaq.push(['_trackEvent', 'Menu Resources', 'click', 'Tickets']);" target="_blank">Bug Tracker</a></li>
+              <li><a href="https://ask.puppetlabs.com/questions/" onclick="_gaq.push(['_trackEvent', 'Menu Resources', 'click', 'Ask']);" target="_blank">Q&amp;A</a></li>
+              <li><a href="http://webchat.freenode.net/?channels=puppet" onclick="_gaq.push(['_trackEvent', 'Menu Resources', 'click', 'IRC']);" target="_blank">IRC: #puppet</a></li>
+            </ul>
+            <ul class="co">
+              <li class="contained">
+                <a href="http://shop.puppetlabs.com/">
+                  <span class="icon-callout fa fa-shopping-cart"></span>
+                  <span class="title">Puppet Store</span>
+                  <span class="copy">Get the latest Puppet Labs buttons, t-shirts and more.</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </li>
+      <li class="menu-item last"><a aria-haspopup="true">About</a>
+        <div class="menu-item-container">
+          <div class="menu-col col-span-4">
+            <ul>
+              <h3>Team</h3>
+              <li><a href="/about/management" onclick="_gaq.push(['_trackEvent', 'Menu About', 'click', 'Management']);">Management</a></li>
+              <li><a href="/about/board-and-advisors" onclick="_gaq.push(['_trackEvent', 'Menu About', 'click', 'Board']);">Board and Advisors</a></li>
+              <li><a href="/about/investors" onclick="_gaq.push(['_trackEvent', 'Menu About', 'click', 'Investors']);">Investors</a></li>
+              <li><a href="/about/careers" onclick="_gaq.push(['_trackEvent', 'Menu About', 'click', 'Careers']);">Careers</a></li>
+            </ul>
+          </div>
+          <div class="menu-col col-span-4">
+            <ul>
+              <h3>Updates</h3>
+              <li><a href="/about/news" onclick="_gaq.push(['_trackEvent', 'News']);">News</a></li>
+              <li><a href="/about/press-releases" onclick="_gaq.push(['_trackEvent', 'Press Releases']);">Press Releases</a></li>
+              <li><a href="/about/awards" onclick="_gaq.push(['_trackEvent', 'Awards']);">Awards</a></li>
+              <li><a href="/company/news/media-kit" onclick="_gaq.push(['_trackEvent', 'Media Kit']);">Media Kit</a></li>
+              <li><a href="/about/customers" onclick="_gaq.push(['_trackEvent', 'Customers']);">Customers</a></li>
+            </ul>
+          </div>
+          <div class="menu-col col-span-4 co-container">
+            <ul>
+              <h3>Connect</h3>
+              <li><a href="/about" onclick="_gaq.push(['_trackEvent', 'Company']);">Company Info</a></li>
+              <li><a href="/events" onclick="_gaq.push(['_trackEvent', 'Events']);">Events</a></li>
+              <li><a href="/community/overview" onclick="_gaq.push(['_trackEvent', 'Community']);">Community</a></li>
+              <li><a href="/contact-sales" onclick="_gaq.push(['_trackEvent', 'Sales']);">Sales</a></li>
+              <li><a href="/contact" onclick="_gaq.push(['_trackEvent', 'Contact']);">Contact Info</a></li>
+            </ul>
+            <ul class="co">
+              <li class="contained">
+                <a href="/about/careers">
+                  <span class="icon-callout fa fa-users"></span>
+                  <span class="title">Careers</span>
+                  <span class="copy">We’re growing fast. Come do great work with us.</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+<!-- sub-menu -->
+            <div class="navbar-sub-section sub-download">
+              <a href="/download-puppet-enterprise" onclick="_gaq.push(['_trackEvent', 'PE Download', 'click', 'Header Button Get Started']);">
+                <button type="button" class="bg-orange">
+                  <span class="icon"></span>
+                  <span class="description">Get Started</span>
+                </button>
+              </a>
+            </div>
+            <div class="navbar-sub-section sub-search">
+              <form action="/blog/using-puppet-modules-to-install-and-manage-wordpress" method="post" id="search-block-form" accept-charset="UTF-8"><div><div class="container-inline">
+      <h2 class="element-invisible">Search form</h2>
+    <div class="form-item form-type-textfield form-item-search-block-form">
+  <label class="element-invisible" for="edit-search-block-form--2">Search </label>
+ <input title="Enter the terms you wish to search for." type="text" id="edit-search-block-form--2" name="search_block_form" value="" size="15" maxlength="128" class="form-text" />
+</div>
+<div class="form-actions form-wrapper" id="edit-actions--2"><input onclick="_gaq.push([&#039;_trackEvent&#039;, &#039;search_block_form&#039;, &#039;click&#039;, &#039;Search&#039;]);" type="submit" id="edit-submit--2" name="op" value="Search" class="form-submit" /></div><input type="hidden" name="form_build_id" value="form-x0lut3QA3cdKRCuBndHGgD2BOvK5F1ILwy9iCW2_zF0" />
+<input type="hidden" name="form_id" value="search_block_form" />
+</div>
+</div></form>            </div>
+            <div class="navbar-sub-section sub-login">
+              	<div class="login-info-inner direction">
+  	<p><a href="/user/login?destination=node/566">Log in</a> or <a href="/user/register?destination=node/566">Create new account</a></p>
+  </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="underlay"></div>
+    </div><!-- /header-wrapper -->
+  </header> <!-- /header -->
+
+  
+  <hr>
+
+  <div id="main" class="clearfix" role="main">
+    <div id="content">
+      <div id="content-inner" class="inner column center">
+                          <div id="content-header">
+                                                                                      <div class="tabs"></div>
+                                              </div> <!-- /#content-header -->
+                <div id="content-area">
+            <div class="region region-content">
+    <div id="block-system-main" class="block block-system block-odd">
+        <div class="content">
+    
+<div class="panel-display burr-flipped clearfix container " >
+
+  <div class="burr-flipped-container burr-flipped-content-container clearfix row-fluid">
+    <div class="burr-flipped-content burr-flipped-content-region panel-panel span8">
+      <div class="burr-flipped-content-inner burr-flipped-content-region-inner panel-panel-inner">
+        <div class="panel-pane pane-entity-view pane-node" >
+  
+      
+  
+  <div class="pane-content">
+    
+<article id="node-566" class="node node-blog-post node-promoted node-sticky node-odd">
+  <header>
+          <h1>Using Puppet Modules to Install and Manage WordPress</h1>
+    
+          <p class="byline">
+        February 17, 2012        by Daniel Sauble        in <a href="/blog-categories/community">Community</a>, <a href="/blog-categories/devops">DevOps</a>, <a href="/blog-categories/tips-how">Tips &amp; How To</a>, <a href="/blog-categories/product">Product</a>, <a href="/blog-categories/product">Product</a>, <a href="/blog-categories/configuration-management">Configuration Management</a>, <a href="/blog-categories/tips-how">Tips &amp; How To</a>, <a href="/blog-categories/culture">Culture</a>, <a href="/blog-tags/community">Community</a>, <a href="/blog-tags/configuration-management">Configuration Management</a>, <a href="/blog-tags/devops">DevOps</a>, <a href="/blog-tags/how">how to</a>, <a href="/blog-tags/modules">modules</a>, <a href="/blog-tags/open-source">open source</a>, <a href="/blog-tags/puppet">puppet</a>, <a href="/blog-tags/puppet-enterprise">Puppet Enterprise</a>, <a href="/blog-tags/sysadmin">sysadmin</a>, <a href="/blog-tags/systems-management">systems management</a>, <a href="/blog-tags/tips">tips</a>      </p>
+    
+  </header>
+  <div class="content">
+        <div class="field field-name-body field-type-text-with-summary field-label-hidden"><div class="field-items" id="md1"><div class="field-item even"><p>Puppet modules are a fantastic way to deploy and manage specific applications. <a href="http://forge.puppetlabs.com">The Puppet Forge</a> contains a wealth of third-party modules that allow you to do some awesome stuff with a minimum of work. In this post, we use a module from the Forge to solve a common task—using Puppet to set up a WordPress blog. Finding the best way to accomplish this with Puppet was a challenge, and helped us feel the joys and pains of those who use our software on a daily basis.</p>
+<p>The first step is to install Puppet, Facter, and RubyGems. Since we’re using Ubuntu, we’ll use apt-get to install these packages. If you decide to use a different OS (or the <a href="http://info.puppetlabs.com/download-learning-puppet-VM.html">Learning Puppet VM</a>), use whatever package manager is appropriate for your platform.</p>
+<ol>
+<li>Open a terminal window and type the following command:<br />
+<pre escaped="true" lang="shell">
+apt-get install puppet puppetmaster facter rubygems</pre></li>
+<li>Next, install the puppet-module gem. We’ll need this in order to pull the WordPress module from the Forge and install it.<br />
+<pre escaped="true" lang="shell">
+gem install puppet-module</pre></li>
+<li>Switch to your Puppet module directory. This is where you’ll run the puppet-module install command.<br />
+<pre escaped="true" lang="shell">
+cd /etc/puppet/modules</pre></li>
+<li>Choosing the right module can be tricky. Usually, multiple modules are available that seem to do the same thing, but some are minimal and others are more fully featured (and sometimes a lightweight, minimal module is what you want).</p>
+<p>In our case, we needed a module that would allow us to customize the WordPress MySQL database (so user name and password could be configured without manual intervention). Unfortunately, there isn’t currently a way to determine what functionality modules expose without downloading and experimenting with them. After some trial and error, we discovered a module that worked for our purposes—and we got there by a simple search of “wordpress” at <a href="http://forge.puppetlabs.com">forge.puppetlabs.com</a>.</p>
+<p>The WordPress module written by Jon Hadfield (<a href="http://forge.puppetlabs.com/jonhadfield/wordpress">jonhadfield/wordpress</a>) is a good, functional module to use for setting up the blog. Switch back to your terminal window and type the following command:</p>
+<pre escaped="true" lang="shell">
+puppet-module install jonhadfield/wordpress</pre></li>
+<li>Edit <tt style="font: 12px Courier New">/etc/puppet/manifests/site.pp</tt> with your favorite editor and add the following lines, where <tt style="font: 12px Courier New">`hostname`</tt> is output of hostname on your system and <tt style="font: 12px Courier New">`domain.com`</tt> is the suffix for fully qualified domain names on your network:<br />
+<pre escaped="true" lang="shell">
+node '`hostname`.`domain.com`' {
+    include wordpress
+}</pre></li>
+<li>Up to this point, you’ve installed Puppet on your system, used puppet-module to download and extract the WordPress module, and configured your <tt style="font: 12px Courier New">site.pp</tt> such that Puppet will manage WordPress on your system. Now, do a Puppet run to kick off the WordPress install:<br />
+<pre escaped="true" lang="shell">
+puppet agent --test</pre></li>
+<li>Go to http://hostname:80 and enter the login credentials for the admin account. This will populate the WordPress database with whatever credentials you used.</li>
+<li>Okay, so, say you want to have future WordPress installations configured with this password/email combo by default. One approach is to dump your WordPress database to the template used by the WordPress module:<br />
+<pre escaped="true" lang="shell">
+mysqldump wordpress >> wordpress/templates/create_wordpress_db.erb</pre></li>
+<li>You’ll need to insert one line for this to work properly, so edit <tt style="font: 12px Courier New">create_wordpress_db.erb</tt> and insert the following line right after <tt style="font: 12px Courier New">CREATE <%= db_name %></tt>:<br />
+<pre escaped="true" lang="shell">
+USE <%= db_name %>;</pre></li>
+<li>Now, test this template by dropping the current database and doing another Puppet agent run. First, drop the existing database:<br />
+<pre escaped="true" lang="shell">
+mysql -u root -e 'drop database wordpress;'</pre></li>
+<li>Then, do an agent run:</p>
+<pre escaped="true" lang="shell">
+puppet agent --test
+</pre></li>
+</ol>
+<p>That’s it! You’ve got a running WordPress blog!</p>
+<p>Interaction with Puppet and its related tools should be a seamless and enjoyable experience--no matter what you’re managing or how complicated the task. We used open-source Puppet to complete this task, but you can easily do the same with our enterprise software. Get the free download at <a href="http://info.puppetlabs.com/download-pe2.html">http://info.puppetlabs.com/download-pe2.html</a>.</p>
+<h2>Learn More</h2>
+<ul>
+<li><a href="http://forge.puppetlabs.com">The Puppet Forge</a></li>
+<li><a href="http://info.puppetlabs.com/download-pe2.html">Download 10 free nodes of Puppet Enterprise</a></li>
+<li><a href="http://info.puppetlabs.com/download-learning-puppet-VM.html">The Learning Puppet VM</a>
+<li>
+</ul>
+</div></div></div>  </div>
+  <footer>
+          <div class="sharethis-buttons"><div class="sharethis-wrapper"><span st_url="http://puppetlabs.com/blog/using-puppet-modules-to-install-and-manage-wordpress" st_title="Using Puppet Modules to Install and Manage WordPress" class="st_googleplus_hcount" displaytext="googleplus"></span>
+<span st_url="http://puppetlabs.com/blog/using-puppet-modules-to-install-and-manage-wordpress" st_title="Using Puppet Modules to Install and Manage WordPress" class="st_twitter_hcount" st_via="puppetlabs" st_username="" displaytext="twitter"></span>
+<span st_url="http://puppetlabs.com/blog/using-puppet-modules-to-install-and-manage-wordpress" st_title="Using Puppet Modules to Install and Manage WordPress" class="st_facebook_hcount" displaytext="facebook"></span>
+<span st_url="http://puppetlabs.com/blog/using-puppet-modules-to-install-and-manage-wordpress" st_title="Using Puppet Modules to Install and Manage WordPress" class="st_reddit_hcount" displaytext="reddit"></span>
+</div></div>
+      </footer>
+</article> <!-- /node-->
+<section id="comments" class="comment-wrapper">
+          <h2 class="title">Comments</h2>
+      
+  <a id="comment-361"></a>
+<div class="comment comment-by-anonymous">
+  <header>
+    <div class="avatar">
+      <img src="http://www.gravatar.com/avatar/0afd044598a2e866680480602cc00cea?s=100&d=retro&r=pg" alt="John Smith" width="50" height="50">
+    </div>
+            <h4 >John Smith</h4>
+        <time class="timeago" datetime="2012-06-26T12:45:40-07:00">Jun 26th, 2012</time>
+    <ul class="links inline"><li class="comment-reply first last"><a href="/comment/reply/566/361">reply</a></li>
+</ul>  </header>
+
+  <div class="content">
+    <div class="field field-name-comment-body field-type-text-long field-label-hidden"><div class="field-items" id="md41"><div class="field-item even"><p>reads good, but what about deploying a development wordpress site to a live site? How would you do this? With all the little dirtyness wordpress gives you like paths in serialized php arrays, plugins etc.</p>
+</div></div></div>      </div> <!-- /.content -->
+</div> <!-- /.comment -->
+<a id="comment-362"></a>
+<div class="comment comment-by-anonymous">
+  <header>
+    <div class="avatar">
+      <img src="http://www.gravatar.com/avatar/3cf7a8ab0bccee5b65d39b50a170a555?s=100&d=retro&r=pg" alt="Marco Pivetta" width="50" height="50">
+    </div>
+            <h4 >Marco Pivetta</h4>
+        <time class="timeago" datetime="2012-02-29T18:08:27-08:00">Feb 29th, 2012</time>
+    <ul class="links inline"><li class="comment-reply first last"><a href="/comment/reply/566/362">reply</a></li>
+</ul>  </header>
+
+  <div class="content">
+    <div class="field field-name-comment-body field-type-text-long field-label-hidden"><div class="field-items" id="md42"><div class="field-item even"><p>This article cleared a bit of fog about puppet-module to me, as I had some dirty mix intalled on my machine!<br />
+Thank you!</p>
+</div></div></div>      </div> <!-- /.content -->
+</div> <!-- /.comment -->
+
+      <section id="comment-form-wrapper">
+      <h2 class="title">Leave a comment</h2>
+      <form class="comment-form user-info-from-cookie" action="/comment/reply/566" method="post" id="comment-form" accept-charset="UTF-8"><div><div class="form-item form-type-textfield form-item-name">
+ <input placeholder="Name (required)" type="text" id="edit-name" name="name" value="" size="30" maxlength="60" class="form-text required" />
+</div>
+<div class="form-item form-type-textfield form-item-mail">
+ <input placeholder="Email (will not be published) (required)" type="text" id="edit-mail" name="mail" value="" size="30" maxlength="64" class="form-text required" />
+</div>
+<div class="form-item form-type-textfield form-item-homepage">
+ <input placeholder="Website" type="text" id="edit-homepage" name="homepage" value="" size="30" maxlength="255" class="form-text" />
+</div>
+<input type="hidden" name="form_build_id" value="form-odpp4_Gksi_62447Xrjy7fxnq6Eqok_xzEfXndGvA1Y" />
+<input type="hidden" name="form_id" value="comment_node_blog_post_form" />
+<input type="hidden" name="honeypot_time" value="1414899237" />
+<div class="field-type-text-long field-name-comment-body field-widget-text-textarea form-wrapper" id="edit-comment-body"><div id="comment-body-add-more-wrapper"><div class="text-format-wrapper"><div class="form-item form-type-textarea form-item-comment-body-und-0-value">
+  <label for="edit-comment-body-und-0-value">Comment </label>
+ <div class="form-textarea-wrapper resizable"><textarea class="text-full form-textarea" id="edit-comment-body-und-0-value" name="comment_body[und][0][value]" cols="60" rows="5"></textarea></div>
+</div>
+<input id="edit-comment-body-und-0-format--2" class="wysiwyg" type="hidden" name="comment_body[und][0][format]" value="plain_text" />
+<div class="clearfix"><div class="format-toggle"></div></div></div>
+</div></div><input class="mollom-content-id" type="hidden" name="mollom[contentId]" value="" />
+<input class="mollom-captcha-id" type="hidden" name="mollom[captchaId]" value="" />
+<div style="display: none;"><div class="form-item form-type-textfield form-item-mollom-homepage">
+ <input autocomplete="off" type="text" id="edit-mollom-homepage" name="mollom[homepage]" value="" size="60" maxlength="128" class="form-text" />
+</div>
+</div><div class="url-textfield"><div class="form-item form-type-textfield form-item-url">
+  <label for="edit-url">Leave this field blank </label>
+ <input autocomplete="off" type="text" id="edit-url" name="url" value="" size="20" maxlength="128" class="form-text" />
+</div>
+</div><div class="form-actions form-wrapper" id="edit-actions"><input onclick="_gaq.push([&#039;_trackEvent&#039;, &#039;comment_node_blog_post_form&#039;, &#039;click&#039;, &#039;Submit&#039;]);" type="submit" id="edit-submit" name="op" value="Submit" class="form-submit" /></div></div></form>    </section> <!-- /#comment-form -->
+  </section> <!-- /#comments -->
+  </div>
+
+  
+  </div>
+      </div>
+    </div>
+    <div class="burr-flipped-sidebar burr-flipped-content-region panel-panel span4">
+      <div class="burr-flipped-sidebar-inner burr-flipped-content-region-inner panel-panel-inner">
+        <div class="panel-pane pane-block pane-menu-block-9 social-links pane-menu-block social-links" >
+  
+      
+  
+  <div class="pane-content">
+    <div class="menu-block-wrapper menu-block-9 menu-name-menu-social parent-mlid-0 menu-level-1">
+  <ul class="menu"><li class="first leaf menu-mlid-1989 blog mid-1989"><a href="/blog" title="Blog" onclick="_gaq.push([&#039;_trackEvent&#039;, &#039;Social Menu&#039;, &#039;click&#039;, &#039;Blog&#039;]);">Blog</a></li>
+<li class="leaf menu-mlid-1991 facebook mid-1991"><a href="https://www.facebook.com/puppetlabs" title="Facebook" onclick="_gaq.push([&#039;_trackEvent&#039;, &#039;Social Menu&#039;, &#039;click&#039;, &#039;Facebook&#039;]);">Facebook</a></li>
+<li class="leaf menu-mlid-1992 linkedin mid-1992"><a href="http://www.linkedin.com/company/621389" title="LinkedIn" onclick="_gaq.push([&#039;_trackEvent&#039;, &#039;Social Menu&#039;, &#039;click&#039;, &#039;LinkedIn&#039;]);">LinkedIn</a></li>
+<li class="leaf menu-mlid-1332 google- mid-1332"><a href="https://plus.google.com/112682055028218091774" title="Google+" onclick="_gaq.push([&#039;_trackEvent&#039;, &#039;Social Menu&#039;, &#039;click&#039;, &#039;Google+&#039;]);">Google+</a></li>
+<li class="last leaf menu-mlid-1990 twitter mid-1990"><a href="https://twitter.com/puppetlabs" title="Twitter" onclick="_gaq.push([&#039;_trackEvent&#039;, &#039;Social Menu&#039;, &#039;click&#039;, &#039;Twitter&#039;]);">Twitter</a></li>
+</ul></div>
+  </div>
+
+  
+  </div>
+<div class="panel-separator"></div><div class="panel-pane pane-block pane-block-6 blog-search-block pane-block blog-search-block" >
+  
+      
+  
+  <div class="pane-content">
+    <form action="/blog" method="get" id="blog_search_form" accept-charset="UTF-8">
+  <div>    
+    <div class="form-item form-type-textfield form-item-keys">
+      <input title="Enter the terms you wish to search for." type="text" id="edit-keys" name="keys" value="" size="15" maxlength="128" class="form-text" placeholder="Search the blog">
+    </div>          
+    <div class="views-exposed-widget views-submit-button">
+      <input type="submit" id="edit-submit-blog-posts" name="" value="Search" class="form-submit">
+    </div>      
+  </div>
+</form>  </div>
+
+  
+  </div>
+<div class="panel-separator"></div><div class="panel-pane pane-block pane-block-7 newsletter-block pane-block newsletter-block" >
+  
+      
+  
+  <div class="pane-content">
+    <form class="lpeRegForm formNotEmpty" method="post" enctype="application/x-www-form-urlencoded" action="http://app-h.marketo.com/index.php/leadCapture/save" id="mktForm_1047" name="mktForm_1047">
+  <ul class='mktLblAbove'>
+    <li  class='mktFormReq mktField' >
+      <span class='mktInput'>
+        <input class='mktFormText mktFormEmail mktFReq' name="Email" id="Email" type='email' title="Subscribe to the Puppet newsletter" placeholder="Subscribe now" value=""  maxlength='255' />
+        <span class='mktFormMsg'></span>
+      </span>
+    </li>
+    <li id='mktFrmButtons'>
+      <input id='mktFrmSubmit' type='submit' value='Subscribe' name='submitButton' onclick='formSubmit(document.getElementById("mktForm_1047")); return false;' />
+      <input style='display: none;' id='mktFrmReset' type='reset' value='Clear' name='resetButton' onclick='formReset(document.getElementById("mktForm_1047")); return false;' />
+    </li>
+  </ul>
+  <span style="display:none;"><input type="text" name="_marketo_comments" value="" /></span>
+  <input type="hidden" name="lpId" value="-1" />
+  <input type="hidden" name="subId" value="100" />
+  <input type="hidden" name="kw" value="" />
+  <input type="hidden" name="cr" value="" />
+  <input type="hidden" name="searchstr" value="" />
+  <input type="hidden" name="lpurl" value="http://info.puppetlabs.com/newslettersubscribe.html?cr={creative}&kw={keyword}" />
+  <input type="hidden" name="formid" value="1047" />
+  <input type="hidden" name="returnURL" value="http://puppetlabs.com/misc/subscription-thank-you/" />
+  <input type="hidden" name="retURL" value="http://puppetlabs.com/misc/subscription-thank-you/" />
+  <input type="hidden" name="returnLPId" value="-1" />
+  <input type="hidden" name="_mkt_disp" value="return" />
+  <input type="hidden" name="_mkt_trk" value="" />
+</form>
+<script type="text/javascript" src="//puppetlabs.com/sites/default/files/mktFormSupport.js"></script>
+<script type="text/javascript">
+function formSubmit(elt) {
+  return Mkto.formSubmit(elt);
+}
+function formReset(elt) {
+  return Mkto.formReset(elt);
+}
+</script>  </div>
+
+  
+  </div>
+<div class="panel-separator"></div><div class="panel-pane pane-views-panes pane-categories-blog-categories-teaser blog-categories-block" >
+  
+      
+  
+  <div class="pane-content">
+    <div class="view view-categories- view-id-categories_ view-display-id-blog_categories_teaser view-dom-id-e1537198f024f2f9217a9be1591317c4">
+            <div class="view-header">
+      <h2><a href="/blog-categories/">Categories</a></h2>    </div>
+  
+  
+  
+      <div class="view-content">
+      <div class="item-list">    <ul>          <li class="views-row views-row-1 views-row-odd views-row-first">  
+  <span class="views-field views-field-name">        <span class="field-content"><a href="/blog-categories/automation">Automation</a></span>  </span></li>
+          <li class="views-row views-row-2 views-row-even">  
+  <span class="views-field views-field-name">        <span class="field-content"><a href="/blog-categories/cloud-virtualization">Cloud &amp; Virtualization</a></span>  </span></li>
+          <li class="views-row views-row-3 views-row-odd">  
+  <span class="views-field views-field-name">        <span class="field-content"><a href="/blog-categories/community">Community</a></span>  </span></li>
+          <li class="views-row views-row-4 views-row-even">  
+  <span class="views-field views-field-name">        <span class="field-content"><a href="/blog-categories/company-news">Company News</a></span>  </span></li>
+          <li class="views-row views-row-5 views-row-odd">  
+  <span class="views-field views-field-name">        <span class="field-content"><a href="/blog-categories/configuration-management">Configuration Management</a></span>  </span></li>
+          <li class="views-row views-row-6 views-row-even">  
+  <span class="views-field views-field-name">        <span class="field-content"><a href="/blog-categories/continuous-delivery">Continuous Delivery</a></span>  </span></li>
+          <li class="views-row views-row-7 views-row-odd">  
+  <span class="views-field views-field-name">        <span class="field-content"><a href="/blog-categories/culture">Culture</a></span>  </span></li>
+          <li class="views-row views-row-8 views-row-even">  
+  <span class="views-field views-field-name">        <span class="field-content"><a href="/blog-categories/customer-stories">Customer Stories</a></span>  </span></li>
+          <li class="views-row views-row-9 views-row-odd">  
+  <span class="views-field views-field-name">        <span class="field-content"><a href="/blog-categories/devops">DevOps</a></span>  </span></li>
+          <li class="views-row views-row-10 views-row-even">  
+  <span class="views-field views-field-name">        <span class="field-content"><a href="/blog-categories/education-training">Education &amp; Training</a></span>  </span></li>
+          <li class="views-row views-row-11 views-row-odd">  
+  <span class="views-field views-field-name">        <span class="field-content"><a href="/blog-categories/events">Events</a></span>  </span></li>
+          <li class="views-row views-row-12 views-row-even">  
+  <span class="views-field views-field-name">        <span class="field-content"><a href="/blog-categories/industry-news">Industry News</a></span>  </span></li>
+          <li class="views-row views-row-13 views-row-odd">  
+  <span class="views-field views-field-name">        <span class="field-content"><a href="/blog-categories/partnerships">Partnerships</a></span>  </span></li>
+          <li class="views-row views-row-14 views-row-even">  
+  <span class="views-field views-field-name">        <span class="field-content"><a href="/blog-categories/product">Product</a></span>  </span></li>
+          <li class="views-row views-row-15 views-row-odd">  
+  <span class="views-field views-field-name">        <span class="field-content"><a href="/blog-categories/puppetconf">PuppetConf</a></span>  </span></li>
+          <li class="views-row views-row-16 views-row-even">  
+  <span class="views-field views-field-name">        <span class="field-content"><a href="/blog-categories/software-defined-infrastructure">Software Defined Infrastructure</a></span>  </span></li>
+          <li class="views-row views-row-17 views-row-odd">  
+  <span class="views-field views-field-name">        <span class="field-content"><a href="/blog-categories/tips-how">Tips &amp; How To</a></span>  </span></li>
+          <li class="views-row views-row-18 views-row-even views-row-last">  
+  <span class="views-field views-field-name">        <span class="field-content"><a href="/blog-categories/tools-integrations">Tools &amp; Integrations</a></span>  </span></li>
+      </ul></div>    </div>
+  
+  
+  
+  
+  
+  
+</div>  </div>
+
+  
+  </div>
+<div class="panel-separator"></div><div class="panel-pane pane-views-panes pane-events-upcoming-events-teaser events-teaser-block" >
+  
+      
+  
+  <div class="pane-content">
+    <div class="view view-events view-id-events view-display-id-upcoming_events_teaser view-dom-id-d97d89bcfb055691ab5b3144ae3b32b1">
+            <div class="view-header">
+      <h2><a href="/events/">Events</a></h2>    </div>
+  
+  
+  
+      <div class="view-content">
+        <div class="views-row views-row-1 views-row-odd views-row-first published">
+      
+  <div class="views-field views-field-title">        <h4 class="field-content"><a href="/events/raleigh-nc-puppet-fundamentals-training-2">Raleigh, NC - Puppet Fundamentals Training - SOLD...</a></h4>  </div>  
+  <div class="views-field views-field-field-event-type">        <div class="field-content">Puppet Fundamentals</div>  </div>  
+  <div class="views-field views-field-field-event-date">        <div class="field-content"><span class="date-display-single" property="dc:date" datatype="xsd:dateTime" content="2014-11-04T00:00:00-08:00">Nov 4</span></div>  </div>  </div>
+  <div class="views-row views-row-2 views-row-even published">
+      
+  <div class="views-field views-field-title">        <h4 class="field-content"><a href="/events/portland-or-puppet-fundamentals-training-3">Portland, OR - Puppet Fundamentals Training</a></h4>  </div>  
+  <div class="views-field views-field-field-event-type">        <div class="field-content">Puppet Fundamentals</div>  </div>  
+  <div class="views-field views-field-field-event-date">        <div class="field-content"><span class="date-display-single" property="dc:date" datatype="xsd:dateTime" content="2014-11-04T00:00:00-08:00">Nov 4</span></div>  </div>  </div>
+  <div class="views-row views-row-3 views-row-odd published">
+      
+  <div class="views-field views-field-title">        <h4 class="field-content"><a href="/events/cincinnati-vmug-user-conference">Cincinnati VMUG User Conference</a></h4>  </div>  
+  <div class="views-field views-field-field-event-type">        <div class="field-content">Tradeshow</div>  </div>  
+  <div class="views-field views-field-field-event-date">        <div class="field-content"><span class="date-display-single" property="dc:date" datatype="xsd:dateTime" content="2014-11-06T00:00:00-08:00">Nov 6</span></div>  </div>  </div>
+  <div class="views-row views-row-4 views-row-even views-row-last published">
+      
+  <div class="views-field views-field-title">        <h4 class="field-content"><a href="/events/lisa-14">LISA &#039;14</a></h4>  </div>  
+  <div class="views-field views-field-field-event-type">        <div class="field-content">Tradeshow</div>  </div>  
+  <div class="views-field views-field-field-event-date">        <div class="field-content"><span class="date-display-single" property="dc:date" datatype="xsd:dateTime" content="2014-11-09T00:00:00-08:00">Nov 9</span></div>  </div>  </div>
+    </div>
+  
+  
+  
+      
+<div class="more-link">
+  <a href="/events">
+    See all events  </a>
+</div>
+  
+  
+  
+</div>  </div>
+
+  
+  </div>
+      </div>
+    </div>
+  </div>
+    
+</div><!-- /.burr-flipped -->
+  </div>
+</div> <!-- /.block -->
+<meta  itemscope="" itemid="http://puppetlabs.com/blog/using-puppet-modules-to-install-and-manage-wordpress" itemref="md1 md3 md5 md7 md9 md11 md13 md15 md17 md19 md21 md23 md24 md26 md28 md30 md32 md34 md36 md38 md40" /><meta  itemscope="" itemref="md44 md51" /><meta  itemscope="" itemref="md46 md52" /><meta  itemscope="" itemref="md48 md53" /><meta  itemscope="" itemref="md50 md54" /><meta  itemscope="" id="md3" itemref="md2" /><meta  itemscope="" id="md5" itemref="md4" /><meta  itemscope="" id="md7" itemref="md6" /><meta  itemscope="" id="md9" itemref="md8" /><meta  itemscope="" id="md11" itemref="md10" /><meta  itemscope="" id="md13" itemref="md12" /><meta  itemscope="" id="md15" itemref="md14" /><meta  itemscope="" id="md17" itemref="md16" /><meta  itemscope="" id="md19" itemref="md18" /><meta  itemscope="" id="md21" itemref="md20" /><meta  itemscope="" id="md23" itemref="md22" /><meta  itemscope="" id="md26" itemref="md25" /><meta  itemscope="" id="md28" itemref="md27" /><meta  itemscope="" id="md30 md38" itemref="md29 md37" /><meta  itemscope="" id="md32 md34" itemref="md31 md33" /><meta  itemscope="" id="md36" itemref="md35" /><meta  itemscope="" id="md40" itemref="md39" /><meta  itemscope="" id="md44 md46" itemref="md43 md45" /><meta  itemscope="" id="md48 md50" itemref="md47 md49" /><meta  itemscope="" itemref="md41" /><meta  itemscope="" itemref="md42" />  </div>
+        </div>
+                      </div>
+    </div> <!-- /content-inner /content -->
+
+    
+    
+  </div> <!-- /main -->
+
+  <hr>
+
+  <footer id="site-footer" role="contentinfo">
+    <div class="footer-wrapper">
+	<div class="footer-col footer-col-left">
+		<ul>
+			<h4>Resources</h4>
+			<li><a href="/download-puppet-enterprise"  onclick="_gaq.push(['_trackEvent', 'Footer', 'click', 'Download']);">Free Download</a></li>
+			<li><a href="/blog"  onclick="_gaq.push(['_trackEvent', 'Footer', 'click', 'Blog']);">Blog</a></li>
+			<li><a href="/security"  onclick="_gaq.push(['_trackEvent', 'Footer', 'click', 'Security']);">Security</a></li>
+			<li><a href="/sitemap"  onclick="_gaq.push(['_trackEvent', 'Footer', 'click', 'Site Map']);">Site Map</a></li>
+			<li><a href="http://feeds.feedburner.com/PuppetLabs"  onclick="_gaq.push(['_trackEvent', 'Footer', 'click', 'RSS']);"
+target="_blank">RSS</a></li>
+		</ul>
+		<ul>
+			<h4>Support</h4>
+			<li><a href="/services/customer-support"  onclick="_gaq.push(['_trackEvent', 'Footer', 'click', 'Support']);">Customer Support</a></li>
+			<li><a href="http://tickets.puppetlabs.com"  onclick="_gaq.push(['_trackEvent', 'Footer', 'click', 'Tickets']);" target="_blank">Bug Tracker</a></li>
+			<li><a href="http://ask.puppetlabs.com"  onclick="_gaq.push(['_trackEvent', 'Footer', 'click', 'Ask']);" target="_blank">Puppet Ask</a></li>
+			<li><a href="http://groups.google.com/group/puppet-users?pli=1"  onclick="_gaq.push(['_trackEvent', 'Footer', 'click', 'Users']);" target="_blank">Puppet Users</a></li>
+			<li><a href="https://github.com/puppetlabs"  onclick="_gaq.push(['_trackEvent', 'Footer', 'click', 'GitHub']);" target="_blank">GitHub</a></li>
+		</ul>
+		<ul>
+			<h4>Company</h4>
+			<li><a href="/about"  onclick="_gaq.push(['_trackEvent', 'Footer', 'click', 'About Us']);">About Us</a></li>
+			<li><a href="/about/careers"  onclick="_gaq.push(['_trackEvent', 'Footer', 'click', 'Careers']);">Careers</a></li>
+			<li><a href="/licensing"  onclick="_gaq.push(['_trackEvent', 'Footer', 'click', 'Licensing']);">Licensing</a></li>
+			<li><a href="/privacy"  onclick="_gaq.push(['_trackEvent', 'Footer', 'click', 'Privacy Policy']);">Privacy Policy</a></li>
+			<li><a href="/terms"  onclick="_gaq.push(['_trackEvent', 'Footer', 'click', 'Terms of Use']);">Terms of Use</a></li>
+		</ul>
+
+		<ul>
+			<h4>Connect</h4>
+			<li><a href="/contact"  onclick="_gaq.push(['_trackEvent', 'Footer', 'click', 'Contact Us']);">Contact Us</a></li>
+            <li><a href="/contact-sales"  onclick="_gaq.push(['_trackEvent', 'Footer', 'click', 'Contact Sales']);">Contact Sales</a></li>
+			<li><a href="https://twitter.com/puppetlabs" target="_blank" onclick="_gaq.push(['_trackEvent', 'Footer', 'click', 'Twitter']);">Twitter</a></li>
+			<li><a href="https://www.facebook.com/puppetlabs" target="_blank" onclick="_gaq.push(['_trackEvent', 'Footer', 'click', 'Facebook']);">Facebook</a></li>
+			<li><a href="http://www.linkedin.com/company/621389" target="_blank" onclick="_gaq.push(['_trackEvent', 'Footer', 'click', 'LinkedIn']);">LinkedIn</a></li>
+			<li><a href="https://plus.google.com/112682055028218091774" target="_blank" onclick="_gaq.push(['_trackEvent', 'Footer', 'click', 'Google+']);">Google+</a></li>
+			<li><a href="http://webchat.freenode.net/?channels=puppet" target="_blank" onclick="_gaq.push(['_trackEvent', 'Footer', 'click', 'IRC']);">IRC</a></li>
+		</ul>
+	</div>
+	<div class="footer-col footer-col-right">
+		<div class="puppet-blocks puppet-blocks-mailing-list-signup">
+      <span class="puppet-blocks-mkto-pe-download-text before-text">
+      Get Puppet Labs News    </span>
+  
+  <form class="lpeRegForm formNotEmpty" method="post" enctype="application/x-www-form-urlencoded" action="http://app-h.marketo.com/index.php/leadCapture/save" id="puppet-blocks-mailing-list-signup" name="mktForm_1047_footer">
+    <ul class='mktLblAbove'>
+      <li  class='mktFormReq mktField' >
+        <span class='mktInput'>
+          <input class='mktFormText mktFormEmail mktFReq' name="Email" id="Email" type='email' title="Subscribe to the Puppet newsletter" placeholder="enter your email address" value="" maxlength='255' />
+          <span class='mktFormMsg'></span>
+        </span>
+      </li>
+      <li id='mktFrmButtons'>
+        <span class="icon fa fa-arrow-circle-right"><input id='mktFrmSubmit' type='submit' value='Subscribe' name='submitButton' onclick='formSubmit(document.getElementById("puppet-blocks-mailing-list-signup")); return false;' /></span>
+        <input style='display: none;' id='mktFrmReset' type='reset' value='Clear' name='resetButton' onclick='formReset(document.getElementById("puppet-blocks-mailing-list-signup")); return false;' />
+      </li>
+    </ul>
+    <span style="display:none;"><input type="text" name="_marketo_comments" value="" /></span>
+    <input type="hidden" name="lpId" value="-1" />
+    <input type="hidden" name="subId" value="100" />
+    <input type="hidden" name="kw" value="" />
+    <input type="hidden" name="cr" value="" />
+    <input type="hidden" name="searchstr" value="" />
+    <input type="hidden" name="lpurl" value="http://info.puppetlabs.com/newslettersubscribe.html?cr={creative}&kw={keyword}" />
+    <input type="hidden" name="formid" value="1047" />
+    <input type="hidden" name="returnURL" value="http://puppetlabs.com/misc/subscription-thank-you" />
+    <input type="hidden" name="retURL" value="http://puppetlabs.com/misc/subscription-thank-you" />
+    <input type="hidden" name="returnLPId" value="-1" />
+    <input type="hidden" name="_mkt_disp" value="return" />
+    <input type="hidden" name="_mkt_trk" value="" />
+  </form>
+
+  <script type="text/javascript" src="/sites/default/files/mktFormSupport.js"></script>
+
+  <script type="text/javascript">
+    function formSubmit(elt) {
+      return Mkto.formSubmit(elt);
+    }
+    function formReset(elt) {
+      return Mkto.formReset(elt);
+    }
+  </script>
+
+
+      <span class="puppet-blocks-mkto-pe-download-text after-text">
+          </span>
+  </div>
+		<p>&copy; 2014 <a href="/about">Puppet Labs</a> <br />
+		<a href="tel:877-575-9775" class="tel">877-575-9775</a></p>
+	</div>
+</div>
+
+  </footer>
+
+</div> <!-- /page -->
+    <script type="text/javascript" src="http://puppetlabs.com/sites/default/files/advagg_js/js__KxoYj9-fDIcDv1VureXTtKrH3A2yOwSqeDMLqY8NCJo__lDeNkRjXjWXYr_fFwQ4GZAAeKPB-_yCFgeHfiqxevuc__8GdOQtaRUIG4qZM0GkhKDwdI6w4jMyBCLt1_xDa_GrY.js"></script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+
+      setTimeout(function(){var a=document.createElement("script");
+      var b=document.getElementsByTagName('script')[0];
+      a.src=document.location.protocol+"//dnn506yrbagrg.cloudfront.net/pages/scripts/0021/9884.js";
+      a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
+      
+//--><!]]>
+</script>
+<script type="text/javascript" src="//munchkin.marketo.net/munchkin.js"></script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+mktoMunchkin("307-QLA-991");
+
+//--><!]]>
+</script>
+  </body>
+</html>
