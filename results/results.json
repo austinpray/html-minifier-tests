@@ -1,0 +1,380 @@
+[
+    {
+        "source": {
+            "path": "/Users/austinpray/Desktop/mintest/files/austinpray.com.html",
+            "size": 14808
+        },
+        "gzip": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/austinpray.com.html.gz",
+            "size": 3711
+        },
+        "min": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/austinpray.com.min.html",
+            "size": 8785
+        },
+        "gzipAndMin": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/austinpray.com.min.html.gz",
+            "size": 3070
+        }
+    },
+    {
+        "source": {
+            "path": "/Users/austinpray/Desktop/mintest/files/cnet.com.html",
+            "size": 205868
+        },
+        "gzip": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/cnet.com.html.gz",
+            "size": 31647
+        },
+        "min": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/cnet.com.min.html",
+            "size": 149125
+        },
+        "gzipAndMin": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/cnet.com.min.html.gz",
+            "size": 29328
+        }
+    },
+    {
+        "source": {
+            "path": "/Users/austinpray/Desktop/mintest/files/cnet.tumblr.com.html",
+            "size": 58321
+        },
+        "gzip": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/cnet.tumblr.com.html.gz",
+            "size": 10882
+        },
+        "min": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/cnet.tumblr.com.min.html",
+            "size": 47508
+        },
+        "gzipAndMin": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/cnet.tumblr.com.min.html.gz",
+            "size": 9952
+        }
+    },
+    {
+        "source": {
+            "path": "/Users/austinpray/Desktop/mintest/files/corelaunch.com.html",
+            "size": 3661
+        },
+        "gzip": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/corelaunch.com.html.gz",
+            "size": 1364
+        },
+        "min": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/corelaunch.com.min.html",
+            "size": 2752
+        },
+        "gzipAndMin": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/corelaunch.com.min.html.gz",
+            "size": 1201
+        }
+    },
+    {
+        "source": {
+            "path": "/Users/austinpray/Desktop/mintest/files/docs.docker.com.html",
+            "size": 41594
+        },
+        "gzip": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/docs.docker.com.html.gz",
+            "size": 10934
+        },
+        "min": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/docs.docker.com.min.html",
+            "size": 34622
+        },
+        "gzipAndMin": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/docs.docker.com.min.html.gz",
+            "size": 10197
+        }
+    },
+    {
+        "source": {
+            "path": "/Users/austinpray/Desktop/mintest/files/guides.rubyonrails.org.1.html",
+            "size": 66079
+        },
+        "gzip": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/guides.rubyonrails.org.1.html.gz",
+            "size": 15556
+        },
+        "min": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/guides.rubyonrails.org.1.min.html",
+            "size": 62449
+        },
+        "gzipAndMin": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/guides.rubyonrails.org.1.min.html.gz",
+            "size": 15039
+        }
+    },
+    {
+        "source": {
+            "path": "/Users/austinpray/Desktop/mintest/files/guides.rubyonrails.org.2.html",
+            "size": 31308
+        },
+        "gzip": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/guides.rubyonrails.org.2.html.gz",
+            "size": 8362
+        },
+        "min": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/guides.rubyonrails.org.2.min.html",
+            "size": 28133
+        },
+        "gzipAndMin": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/guides.rubyonrails.org.2.min.html.gz",
+            "size": 8023
+        }
+    },
+    {
+        "source": {
+            "path": "/Users/austinpray/Desktop/mintest/files/guides.rubyonrails.org.3.html",
+            "size": 46192
+        },
+        "gzip": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/guides.rubyonrails.org.3.html.gz",
+            "size": 11798
+        },
+        "min": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/guides.rubyonrails.org.3.min.html",
+            "size": 42834
+        },
+        "gzipAndMin": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/guides.rubyonrails.org.3.min.html.gz",
+            "size": 11420
+        }
+    },
+    {
+        "source": {
+            "path": "/Users/austinpray/Desktop/mintest/files/guides.rubyonrails.org.html",
+            "size": 101585
+        },
+        "gzip": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/guides.rubyonrails.org.html.gz",
+            "size": 25497
+        },
+        "min": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/guides.rubyonrails.org.min.html",
+            "size": 97543
+        },
+        "gzipAndMin": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/guides.rubyonrails.org.min.html.gz",
+            "size": 24654
+        }
+    },
+    {
+        "source": {
+            "path": "/Users/austinpray/Desktop/mintest/files/gulpWebapp.html",
+            "size": 4919
+        },
+        "gzip": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/gulpWebapp.html.gz",
+            "size": 1454
+        },
+        "min": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/gulpWebapp.min.html",
+            "size": 3188
+        },
+        "gzipAndMin": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/gulpWebapp.min.html.gz",
+            "size": 1102
+        }
+    },
+    {
+        "source": {
+            "path": "/Users/austinpray/Desktop/mintest/files/h5bp.html",
+            "size": 1820
+        },
+        "gzip": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/h5bp.html.gz",
+            "size": 874
+        },
+        "min": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/h5bp.min.html",
+            "size": 1182
+        },
+        "gzipAndMin": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/h5bp.min.html.gz",
+            "size": 636
+        }
+    },
+    {
+        "source": {
+            "path": "/Users/austinpray/Desktop/mintest/files/macrumors.com.html",
+            "size": 159660
+        },
+        "gzip": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/macrumors.com.html.gz",
+            "size": 33387
+        },
+        "min": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/macrumors.com.min.html",
+            "size": 130830
+        },
+        "gzipAndMin": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/macrumors.com.min.html.gz",
+            "size": 31449
+        }
+    },
+    {
+        "source": {
+            "path": "/Users/austinpray/Desktop/mintest/files/openbsd.org.html",
+            "size": 140403
+        },
+        "gzip": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/openbsd.org.html.gz",
+            "size": 40564
+        },
+        "min": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/openbsd.org.min.html",
+            "size": 140063
+        },
+        "gzipAndMin": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/openbsd.org.min.html.gz",
+            "size": 39422
+        }
+    },
+    {
+        "source": {
+            "path": "/Users/austinpray/Desktop/mintest/files/puppetlabs.com.html",
+            "size": 68646
+        },
+        "gzip": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/puppetlabs.com.html.gz",
+            "size": 14848
+        },
+        "min": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/puppetlabs.com.min.html",
+            "size": 58814
+        },
+        "gzipAndMin": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/puppetlabs.com.min.html.gz",
+            "size": 13392
+        }
+    },
+    {
+        "source": {
+            "path": "/Users/austinpray/Desktop/mintest/files/slashdot.org.html",
+            "size": 123057
+        },
+        "gzip": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/slashdot.org.html.gz",
+            "size": 30263
+        },
+        "min": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/slashdot.org.min.html",
+            "size": 109610
+        },
+        "gzipAndMin": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/slashdot.org.min.html.gz",
+            "size": 28731
+        }
+    },
+    {
+        "source": {
+            "path": "/Users/austinpray/Desktop/mintest/files/stackoverflow.com.2.html",
+            "size": 229647
+        },
+        "gzip": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/stackoverflow.com.2.html.gz",
+            "size": 40409
+        },
+        "min": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/stackoverflow.com.2.min.html",
+            "size": 169178
+        },
+        "gzipAndMin": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/stackoverflow.com.2.min.html.gz",
+            "size": 37455
+        }
+    },
+    {
+        "source": {
+            "path": "/Users/austinpray/Desktop/mintest/files/stackoverflow.com.html",
+            "size": 250625
+        },
+        "gzip": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/stackoverflow.com.html.gz",
+            "size": 35258
+        },
+        "min": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/stackoverflow.com.min.html",
+            "size": 203048
+        },
+        "gzipAndMin": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/stackoverflow.com.min.html.gz",
+            "size": 33660
+        }
+    },
+    {
+        "source": {
+            "path": "/Users/austinpray/Desktop/mintest/files/vimhelp.appspot.com.html",
+            "size": 698537
+        },
+        "gzip": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/vimhelp.appspot.com.html.gz",
+            "size": 113955
+        },
+        "min": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/vimhelp.appspot.com.min.html",
+            "size": 663465
+        },
+        "gzipAndMin": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/vimhelp.appspot.com.min.html.gz",
+            "size": 112528
+        }
+    },
+    {
+        "source": {
+            "path": "/Users/austinpray/Desktop/mintest/files/wikipedia.org.html",
+            "size": 227878
+        },
+        "gzip": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/wikipedia.org.html.gz",
+            "size": 37661
+        },
+        "min": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/wikipedia.org.min.html",
+            "size": 215591
+        },
+        "gzipAndMin": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/wikipedia.org.min.html.gz",
+            "size": 36720
+        }
+    },
+    {
+        "source": {
+            "path": "/Users/austinpray/Desktop/mintest/files/wordpress.org.1.html",
+            "size": 31238
+        },
+        "gzip": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/wordpress.org.1.html.gz",
+            "size": 10516
+        },
+        "min": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/wordpress.org.1.min.html",
+            "size": 29139
+        },
+        "gzipAndMin": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/wordpress.org.1.min.html.gz",
+            "size": 9856
+        }
+    },
+    {
+        "source": {
+            "path": "/Users/austinpray/Desktop/mintest/files/wordpress.org.2.html",
+            "size": 41579
+        },
+        "gzip": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/wordpress.org.2.html.gz",
+            "size": 14538
+        },
+        "min": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/wordpress.org.2.min.html",
+            "size": 39053
+        },
+        "gzipAndMin": {
+            "path": "/Users/austinpray/Desktop/mintest/dist/wordpress.org.2.min.html.gz",
+            "size": 13805
+        }
+    }
+]

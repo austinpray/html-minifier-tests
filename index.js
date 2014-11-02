@@ -14,12 +14,11 @@ var zlib         = require('zlib');
 
 var minimize = new Minimize({});
 var outputDir = __dirname + '/dist/';
+var files;
 var getFileName = function (path) {
   path = path.split('/');
   return path[path.length - 1];
 };
-
-var files;
 
 function calculateSavings(file) {
   return Math.abs(file.gzip.size - file.gzipAndMin.size) / file.source.size * 100 + '%';
@@ -83,9 +82,7 @@ async.series([
     // clean dist
     del('dist/*', function () {
       fs.mkdir(__dirname + '/dist/' ,function(e){
-        fs.mkdir(__dirname + '/dist/results/' ,function(e){
-          callback(null);
-        });
+        callback(null);
       });
     });
   },
@@ -148,9 +145,9 @@ async.series([
 
   console.log(consoleTable.toString());
 
-  fs.writeFile(__dirname + '/dist/results/results.json', JSON.stringify(files, null, 4));
+  fs.writeFile(__dirname + '/results/results.json', JSON.stringify(files, null, 4));
 
   csv.stringify(csvTable, function(err, data){
-    fs.writeFile(__dirname + '/dist/results/results.csv', data);
+    fs.writeFile(__dirname + '/results/results.csv', data);
   });
 });
